@@ -1,0 +1,65 @@
+version: '3'
+
+services:
+  mongodb:
+    image: mongo:7.0.0
+    restart: always
+    container_name: news-db
+    env_file:
+      - .env
+    volumes:
+      - news_db:/data/db
+      - news_db:/data/configdb
+    command: --port 5433
+    ports:
+      - "5433:5433"
+    expose:
+      - "5433"
+    networks:
+      news-network:
+        ipv4_address: 172.19.0.2
+        aliases:
+          - mongodb.news
+
+  monitoring:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mongodb
+    env_file:
+      - .env
+    command: python monitoring/Service.py
+    restart: unless-stopped
+    networks:
+      news-network:
+        ipv4_address: 172.19.0.3
+        aliases:
+          - monitoring.news
+
+  transformer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mongodb
+    env_file:
+      - .env
+    command: python monitoring/Transformer.py
+    restart: unless-stopped
+    networks:
+      news-network:
+        ipv4_address: 172.19.0.4
+        aliases:
+          - transformer.news
+
+volumes:
+  news_db:
+
+networks:
+    news-network:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.19.0.0/16
