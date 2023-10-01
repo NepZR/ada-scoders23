@@ -4,7 +4,7 @@ services:
   mongodb:
     image: mongo:7.0.0
     restart: always
-    container_name: news-db
+    container_name: news-database
     env_file:
       - .env
     volumes:
@@ -25,6 +25,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: monitoring-service
     depends_on:
       - mongodb
     env_file:
@@ -41,6 +42,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: production-service
     depends_on:
       - mongodb
     env_file:
