@@ -44,17 +44,13 @@ class NewsCrawler:
     def _make_api_request(self, query_data: dict) -> dict:
         response = requests.get(url=self.api_endpoint, params=query_data)
         if response.status_code != 200:
+            err_message = response.text
             raise ConnectionError(
-                "News Crawler | API >> Error getting data from NewsAPI. Halting execution."
+                f"News Crawler | API >> Error getting data from NewsAPI. "
+                f"Error Message: {err_message}. Halting execution."
             )
 
         r_data = response.json()
-        if r_data["status"] == "error":
-            err_code, err_message = r_data["code"], r_data["message"]
-            raise RuntimeError(
-                f"News Crawler | API >> Error Code \"{err_code}\" returned from API Data. Message: {err_message}"
-            )
-
         return r_data
 
     def get_news(self, search_terms: List[str], since_hours: int = 1, language: str = "en") -> Iterable[dict]:
@@ -77,7 +73,11 @@ class NewsCrawler:
             )
             query_params["q"] = term
 
-            r_data = self._make_api_request(query_data=query_params)
+            try:
+                r_data = self._make_api_request(query_data=query_params)
+            except ConnectionError:
+                r_data = {"totalResults": 0, "articles": []}
+
             total_results = r_data["totalResults"]
             total_pages = ceil(total_results / 100)
 
