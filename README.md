@@ -20,7 +20,13 @@ git clone git@github.com:NepZR/ada-scoders23.git -b "data-extraction-module"
 cd ada-scoders23/
 ~~~
 
-### 3. Start the Docker Compose for this project
+### 3. Edit the `.env` file located in the root folder to add your NewsAPI Token
+> If you don't have one, create an account and get yours <a href="https://newsapi.org/register">clicking here</a>.
+~~~dotenv
+API_KEY=your_api_token
+~~~
+
+### 4. Start the Docker Compose for this project
 ~~~shell
 docker-compose up -d --build
 ~~~
