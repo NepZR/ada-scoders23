@@ -2,7 +2,7 @@
 
 ## Sistema de Monitoramento de Avanços no Campo da Genômica
 
-> This project is related to the fourth module of the Data Engineering Track, Data Extraction I, of Ada Tech's Program in collaboration with Santander, named Santander Coders 2023. The purpose of this repository is to centralize all development of the Monitoring System proposed as the Final Project for this Module, made with ❤️ by <a href="https://github.com/NepZR">Lucas Rodrigues (@NepZR)</a>.
+> This project is related to the fourth module of the Data Engineering Track, Data Extraction I, of Ada Tech's Program in collaboration with Santander, named Santander Coders 2023. The purpose of this repository is to centralize all development of the Monitoring System proposed as the Final Project for this Module and using the <a href="https://newsapi.org/">NewsAPI</a> as the base data source, made with ❤️ by <a href="https://github.com/NepZR">Lucas Rodrigues (@NepZR)</a>.
 
 ---
 
