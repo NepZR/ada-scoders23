@@ -55,6 +55,25 @@ services:
         aliases:
           - transformer.news
 
+  webhook:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: webhook-api
+    depends_on:
+      - mongodb
+    env_file:
+      - .env
+    command: python api/Webhook.py
+    restart: unless-stopped
+    ports:
+      - "6000:6000"
+    networks:
+      news-network:
+        ipv4_address: 172.19.0.5
+        aliases:
+          - webhook.news
+
 volumes:
   news_db:
 
