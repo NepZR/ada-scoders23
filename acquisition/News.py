@@ -57,7 +57,7 @@ class NewsCrawler:
 
         return r_data
 
-    def get_news(self, search_terms: List[str], since_hours: int = 1) -> Iterable[dict]:
+    def get_news(self, search_terms: List[str], since_hours: int = 1, language: str = "en") -> Iterable[dict]:
         search_terms_fmt = self._make_search_terms(terms_list=search_terms)
         initial_date = (datetime.now() - timedelta(hours=since_hours)).strftime("%Y-%m-%dT%H:%M:%S")
         final_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
@@ -66,7 +66,7 @@ class NewsCrawler:
             "q": "",
             "from": initial_date,
             "to": final_date,
-            "language": "en",
+            "language": language,
             "sortBy": "publishedAt",
             "apiKey": self.api_key
         }
