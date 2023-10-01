@@ -29,7 +29,7 @@ docker-compose up -d --build
 ---
 
 ## 🌍 API - Webhook
-> 🎮 Demo the Webhook API running the Python Notebook `api_demo.ipynb` located in the root folder of this project.
+> 🎮 Demo the Project Features running the Python Notebook `project_demo.ipynb` located in the root folder of this project.
 
 
 #### - Host and Port: `http://localhost:6000`
