@@ -47,7 +47,7 @@ class NewsCrawler:
             err_message = response.text
             raise ConnectionError(
                 f"News Crawler | API >> Error getting data from NewsAPI. "
-                f"Error Message: {err_message}. Halting execution."
+                f"Error Message: {err_message}."
             )
 
         r_data = response.json()
@@ -75,7 +75,8 @@ class NewsCrawler:
 
             try:
                 r_data = self._make_api_request(query_data=query_params)
-            except ConnectionError:
+            except ConnectionError as api_err:
+                logger.debug(f"News Crawler | API >> API Limit Error. Skipping Search. Info: {api_err}")
                 r_data = {"totalResults": 0, "articles": []}
 
             total_results = r_data["totalResults"]
