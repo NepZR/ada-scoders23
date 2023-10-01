@@ -1,6 +1,7 @@
 import os
 import traceback
 from datetime import datetime
+from copy import deepcopy
 from typing import Iterable
 
 import pymongo
@@ -37,10 +38,11 @@ class NewsDBController:
         self.db = self.client.get_database(name="scoders")
 
     def insert_data(self, data: dict) -> bool:
-        data["entry_dt"] = datetime.utcnow()
+        new_data = deepcopy(data)
+        new_data["entry_dt"] = datetime.utcnow()
 
         try:
-            inserted_data = self.collection.insert_one(data)
+            inserted_data = self.collection.insert_one(new_data)
             logger.success(
                 f"Document ID {inserted_data.inserted_id} indexed into <<{self.active_collection.upper()}>> "
                 f"Database at {datetime.utcnow()}. "
@@ -64,14 +66,13 @@ class NewsDBController:
 
     def is_document_already_inserted(self, data: dict) -> bool:
         check_params = {
-            "source": data["source"]["name"],
+            "source.name": data["source"]["name"],
             "title": data["title"],
             "publishedAt": data["publishedAt"],
-            "search_term": data["search_term"],
         }
 
-        documents = self.collection.find_one(check_params)
-        if documents is None:
+        documents = self.collection.count_documents(check_params)
+        if documents < 1:
             return False
 
         return True
