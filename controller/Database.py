@@ -14,15 +14,17 @@ class NewsDBController:
     def __init__(self, collection: str = "news") -> None:
         load_dotenv()
 
-        if collection.lower().strip() not in ("news", "production", "monitoring"):
+        self.valid_collections = ("news", "production", "monitoring")
+        if collection.lower().strip() not in self.valid_collections:
             raise ValueError(
-                f"Collection name is invalid! Expected values: ('news', 'production'). Informed value: {collection}"
+                f"Collection name is invalid! Expected values: {self.valid_collections}. Informed value: {collection}"
             )
 
         self.client: pymongo.MongoClient | None = None
         self.db: pymongo.database.Database | None = None
 
         self.set_connection()
+        self.active_collection = collection.lower().strip()
         self.collection = self.db.get_collection(collection.lower().strip())
 
     def set_connection(self) -> None:
@@ -40,7 +42,8 @@ class NewsDBController:
         try:
             inserted_data = self.collection.insert_one(data)
             logger.success(
-                f"Document ID {inserted_data.inserted_id} indexed into News Database at {datetime.utcnow()}."
+                f"Document ID {inserted_data.inserted_id} indexed into <<{self.active_collection.upper()}>> "
+                f"Database at {datetime.utcnow()}. "
             )
             return True
         except Exception as e:
