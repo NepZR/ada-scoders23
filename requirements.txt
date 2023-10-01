@@ -6,3 +6,4 @@ tqdm==4.66.1
 flask==3.0.0
 jupyterlab==4.0.6
 jupyterlab-git==0.43.0
+pandas==2.1.1
