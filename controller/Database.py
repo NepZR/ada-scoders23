@@ -57,6 +57,12 @@ class NewsDBController:
         yield from self.collection.find()
 
     def retrieve_last_monitoring_dt(self, service: str) -> datetime:
+        services = ("monitoring", "transformer")
+        if service.lower().strip() not in services:
+            raise ValueError(
+                f"Invalid service name! Expected values: {services}. Informed value: {service}."
+            )
+
         last_monitoring = self.collection.find_one({"service": service}, sort=[('entry_dt', pymongo.DESCENDING)])
         if last_monitoring is None:
             return datetime(year=2000, month=12, day=31)
