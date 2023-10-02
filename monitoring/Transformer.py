@@ -65,8 +65,8 @@ class NewsDataTransformerService:
 
     def run(self) -> None:
         last_monit_dt = self.monit_db.retrieve_last_monitoring_dt(service="transformer")
-        last_transform_time = (datetime.utcnow() - last_monit_dt).seconds
-        if last_transform_time < 86400:
+        last_transform_time = (datetime.utcnow() - last_monit_dt).days
+        if last_transform_time < 1:
             logger.warning(
                 f"Transformer Service | Run >> Less than ~24 hour since the last monitoring at {last_monit_dt}. "
                 f"Waiting..."
