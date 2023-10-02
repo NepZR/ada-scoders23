@@ -38,12 +38,17 @@ class NewsDataTransformerService:
             pub_year, pub_month_year, pub_date = str(pub_dt.year), pub_dt.strftime("%Y-%m"), pub_dt.strftime("%Y-%m-%d")
             if pub_year not in insights_dict["news_count_period"]["year"].keys():
                 insights_dict["news_count_period"]["year"][pub_year] = 0
+            if pub_year not in insights_dict["keyword_count_period"][keyword]["year"].keys():
                 insights_dict["keyword_count_period"][keyword]["year"][pub_year] = 0
+
             if pub_month_year not in insights_dict["news_count_period"]["month"].keys():
                 insights_dict["news_count_period"]["month"][pub_month_year] = 0
+            if pub_month_year not in insights_dict["keyword_count_period"][keyword]["month"].keys():
                 insights_dict["keyword_count_period"][keyword]["month"][pub_month_year] = 0
+
             if pub_date not in insights_dict["news_count_period"]["date"].keys():
                 insights_dict["news_count_period"]["date"][pub_date] = 0
+            if pub_date not in insights_dict["keyword_count_period"][keyword]["date"].keys():
                 insights_dict["keyword_count_period"][keyword]["date"][pub_date] = 0
 
             insights_dict["news_count_period"]["year"][pub_year] += 1
@@ -54,6 +59,11 @@ class NewsDataTransformerService:
             insights_dict["keyword_count_period"][keyword]["date"][pub_date] += 1
 
             source, author = data["source"]["name"], data["author"]
+            if source is None:
+                source = "Unknown"
+            if author is None:
+                author = "Unknown"
+
             if source not in insights_dict["news_count_source"].keys():
                 insights_dict["news_count_source"][source] = {}
             if author not in insights_dict["news_count_source"][source].keys():
